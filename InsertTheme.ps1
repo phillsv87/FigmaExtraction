@@ -9,12 +9,18 @@ param(
 )
 $ErrorActionPreference="Stop"
 
-$ts=(dotnet run --project "$PSScriptRoot" -c Release -- `
+$ts=dotnet run --project "$PSScriptRoot" -c Release -- `
     -themeFile $themeFile `
     -infName $infName `
     -tokenPath $tokenPath `
     -fileId $fileId `
-    -nodeIds $nodeIds) | Out-String
+    -nodeIds $nodeIds
+
+if(!$?){
+    throw "Figma Extration failed"
+}
+
+$ts=$ts | Out-String
 
 $styleTs=Get-Content -Path $output -Raw
 
